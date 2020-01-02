@@ -15,6 +15,8 @@ namespace RSDataManager.Controllers
         public IHttpActionResult Get()
         {
             string userId = RequestContext.Principal.Identity.GetUserId();
+
+            // we can return the proper http return code - e.g. OK (200), CONTENT NOT FOUND (400), SERVER ERROR (500), etc
             return Ok( new string[] { "value1", "value2", userId });
         }
 
