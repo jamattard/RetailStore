@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RSDesktopUI.Helpers;
 using RSDesktopUI.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace RSDesktopUI
 {
@@ -17,6 +19,11 @@ namespace RSDesktopUI
         public Bootstrapper()
         {
             Initialize();
+
+            ConventionManager.AddElementConvention<PasswordBox>(
+            Helpers.PasswordBoxHelper.BoundPasswordProperty,
+            "Password",
+            "PasswordChanged");
         }
 
         // override to use our DI container
@@ -27,7 +34,8 @@ namespace RSDesktopUI
 
             _container
                 .Singleton<IWindowManager, WindowManager>()  // service to manage windows
-                .Singleton<IEventAggregator, EventAggregator>(); // for event handling - singleton
+                .Singleton<IEventAggregator, EventAggregator>() // for event handling - singleton
+                .Singleton<IAPIHelper, APIHelper> ();           // http client created and ready to use
 
             // refelction to rope in view models on start up 
             GetType().Assembly.GetTypes()
