@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RSDesktopUI.Library.Api;
 
 namespace RSDesktopUI.ViewModels
 {
@@ -42,6 +43,32 @@ namespace RSDesktopUI.ViewModels
             }
         }
 
+
+        public bool IsErrorVisible
+        {
+            get 
+            {
+                if (ErrorMessage.Length > 0)
+                    return true;
+                return false; 
+            }
+        }
+
+        private string _errorMessage = string.Empty;
+
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set 
+            { 
+                _errorMessage = value;
+                NotifyOfPropertyChange(() => IsErrorVisible);
+                NotifyOfPropertyChange(() => ErrorMessage);
+            }
+        }
+
+
+
         public bool CanLogIn
         {
             get
@@ -53,17 +80,22 @@ namespace RSDesktopUI.ViewModels
             }
         }
 
+
+
         public async Task LogIn()
         {
             try
             {
+                ErrorMessage = string.Empty;
                 var result = await _apiHelper.Authenticate(Username, Password);
+
+                // capture more info about user
+                await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
 
             }
             catch (Exception ex)
             {
-
-                Console.WriteLine(ex.Message);            
+                ErrorMessage = ex.Message;            
             }
 
         }

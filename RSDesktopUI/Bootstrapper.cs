@@ -1,5 +1,7 @@
 ﻿using Caliburn.Micro;
 using RSDesktopUI.Helpers;
+using RSDesktopUI.Library.Api;
+using RSDesktopUI.Library.Models;
 using RSDesktopUI.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -35,6 +37,7 @@ namespace RSDesktopUI
             _container
                 .Singleton<IWindowManager, WindowManager>()  // service to manage windows
                 .Singleton<IEventAggregator, EventAggregator>() // for event handling - singleton
+                .Singleton<ILoggedInUserModel, LoggedInUserModel>()
                 .Singleton<IAPIHelper, APIHelper> ();           // http client created and ready to use
 
             // refelction to rope in view models on start up 
